@@ -1,0 +1,65 @@
+    @GetMapping("/testImage")
+    public void test1() {
+        try {
+//            DefaultPieDataset dataset = new DefaultPieDataset();
+//            dataset.setValue("待初验（25%）", 4);
+//            dataset.setValue("待终验（25%）", 4);
+//            dataset.setValue("已移交（25%）", 4);
+//            dataset.setValue("建设中（25%）", 4);
+//
+//            JFreeChart chart = SVGPieChartUtil.createChart(dataset);
+//            SVGGraphics2D g2 = new SVGGraphics2D(600, 400);
+////        g2.setRenderingHint(JFreeChart.KEY_SUPPRESS_SHADOW_GENERATION, true);
+//            Rectangle r = new Rectangle(0, 0, 600, 400);
+//            chart.draw(g2, r);
+//
+//
+//
+//
+//            ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
+//            ChartUtilities.writeChartAsJPEG(byteArrayOut, chart, 600, 400);
+//
+//            HSSFWorkbook wb = new HSSFWorkbook();
+//            HSSFSheet sheet1 = wb.createSheet("test picture");
+//            HSSFPatriarch patriarch = sheet1.createDrawingPatriarch();
+//            HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 255, 255,(short) 1, 1, (short) 5, 8);
+//            anchor.setAnchorType(ClientAnchor.AnchorType.DONT_MOVE_AND_RESIZE);
+//            patriarch.createPicture(anchor, wb.addPicture(byteArrayOut.toByteArray(), HSSFWorkbook.PICTURE_TYPE_PNG));
+//            FileOutputStream fileOut=null;
+//            fileOut = new FileOutputStream("D:/测试Excel.xls");
+//            wb.write(fileOut);
+//            System.out.println("----Excle文件已生成------");
+//            fileOut.close();
+
+            DefaultPieDataset dataset = new DefaultPieDataset();
+            dataset.setValue("待初验，4，25%", 4);
+            dataset.setValue("待终验，4，25%", 4);
+            dataset.setValue("已移交，4，25%", 4);
+            dataset.setValue("建设中，4，25%", 4);
+
+
+            // 分别是:显示图表的标题、需要提供对应图表的DateSet对象、是否显示图例、是否生成贴士以及是否生成URL链接
+            JFreeChart chart = ChartFactory.createPieChart("项目状态分布图", dataset, false, false, true);
+            // 如果不使用Font,中文将显示不出来
+            Font font = new Font("宋体", Font.BOLD, 12);
+            // 设置图片标题的字体
+            chart.getTitle().setFont(font);
+            // 得到图块,准备设置标签的字体
+            PiePlot plot = (PiePlot) chart.getPlot();
+            // 设置标签字体
+            plot.setLabelFont(font);
+            plot.setStartAngle(new Float(3.14f / 2f));
+            // 设置plot的前景色透明度
+            plot.setForegroundAlpha(0.7f);
+            // 设置plot的背景色透明度
+            plot.setBackgroundAlpha(0.0f);
+            // 设置标签生成器(默认{0})
+            // {0}:key {1}:value {2}:百分比 {3}:sum
+            plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}({1}占{2})"));
+            ChartUtilities.saveChartAsJPEG(new File("D:/test.jpg"), chart, 600, 300);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }    fileOut.close();
