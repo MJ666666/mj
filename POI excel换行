@@ -1,0 +1,10 @@
+               XSSFCell auditCell3 = auditRow.createCell(3);
+                auditCell3.setCellType(CellType.STRING);
+                StringBuffer currentNode = new StringBuffer();
+                currentNode.append("\n");
+                auditCell3.setCellValue(currentNode.toString());
+                CellStyle cs = workbook.createCellStyle();
+                cs.setWrapText(true);
+                auditCell3.setCellStyle(cs);
+                //增加行的高度以适应2行文本的高度,设置高度单位(像素)
+                auditRow.setHeightInPoints((11*sheet3.getDefaultRowHeightInPoints()));
