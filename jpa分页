@@ -1,0 +1,39 @@
+import javax.persistence.EntityManager;	
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+
+public abstract class BaseJpaRepository<T, String> extends SimpleJpaRepository {
+
+    public EntityManager em;
+
+    protected BaseJpaRepository(Class<T> domainClass, EntityManager em) {
+        super(domainClass, em);
+        this.em = em;
+    }
+}
+
+
+
+
+//-------------------------------------------------
+@Repository
+public class U9SubcontractorPaymentRecordRepository extends BaseJpaRepository<U9SubcontractorPaymentRecord,String>{
+    protected U9SubcontractorPaymentRecordRepository(EntityManager em) {
+        super(U9SubcontractorPaymentRecord.class, em);
+    }
+
+    public Page<U9SubcontractorPaymentRecord> findRecordByProjectId(String projectId, Integer curPage, Integer pageSize) {
+        Sort dateSort = new Sort(new Sort.Order(Sort.Direction.DESC, "reqDate"));
+        Pageable pageRequest = new PageRequest(curPage, pageSize,dateSort);
+        Specification<U9SubcontractorPaymentRecord> specification = new Specification<U9SubcontractorPaymentRecord>() {
+            @Override
+            public Predicate toPredicate(Root<U9SubcontractorPaymentRecord> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate projectPred = cb.equal(root.get("projectId"), projectId);
+                return cb.and(projectPred);
+            }
+        };
+        Page<U9SubcontractorPaymentRecord> page = findAll(specification, pageRequest);
+        return page;
+    }
+
+
+}
