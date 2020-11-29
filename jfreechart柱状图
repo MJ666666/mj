@@ -1,0 +1,44 @@
+  <dependency>
+            <groupId>jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.13</version>
+        </dependency>
+
+    public static void main(String[] args) throws IOException {
+        DefaultCategoryDataset dataSet = new DefaultKeyedValues2DDataset();
+        dataSet.addValue(21, "按计划进行", "华北");
+        dataSet.addValue(10, "落后于计划", "华北");
+        dataSet.addValue(11, "按计划进行", "华南");
+        dataSet.addValue(12, "落后于计划", "华南");
+        JFreeChart barChart = ChartFactory.createBarChart("项目执行情况分布图", "地区", "数量", dataSet, PlotOrientation.VERTICAL, true, true, true);
+        Font font = new Font("宋体", Font.BOLD, 12);
+        // 设置图片标题的字体
+        barChart.getTitle().setFont(font);
+        CategoryPlot categoryPlot = barChart.getCategoryPlot();
+        ValueAxis rangeAxis = categoryPlot.getRangeAxis();
+        rangeAxis.setLabelFont(font);
+
+
+        CategoryAxis domainAxis = categoryPlot.getDomainAxis();
+        domainAxis.setLabelFont(font);
+        domainAxis.setTickLabelFont(font);
+
+        categoryPlot.getRenderer().setBaseItemLabelFont(font);
+
+        CategoryItemRenderer renderer = categoryPlot.getRenderer();
+        renderer.setSeriesPaint(0, new Color(66,153,176));
+        renderer.setSeriesPaint(1, new Color(219, 133, 63));
+        renderer.setSeriesItemLabelGenerator(0, new StandardCategoryItemLabelGenerator());
+        renderer.setSeriesItemLabelGenerator(1, new StandardCategoryItemLabelGenerator());
+
+        renderer.setSeriesItemLabelsVisible(0, true);
+        renderer.setSeriesItemLabelsVisible(1, true);
+        renderer.setSeriesItemLabelFont(0, font);
+        renderer.setSeriesItemLabelFont(1, font);
+        // 得到图块,准备设置标签的字体
+        barChart.getLegend().setItemFont(font);
+        ChartUtilities.saveChartAsJPEG(new File("D:/bar.jpg"), barChart, 1000, 600);
+
+
+
+    }
