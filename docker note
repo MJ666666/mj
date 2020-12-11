@@ -1,0 +1,5 @@
+1.查看最后100行的日志：
+docker logs -f -t --since="2018-02-08" --tail=100 CONTAINER_ID
+如：
+docker logs -f -t --tail=100 69b
+参考连接：https://www.cnblogs.com/mr-wuxiansheng/p/11412489.html
