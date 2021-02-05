@@ -1,0 +1,37 @@
+ //zip包里的文件夹其实就是没有mimeTypes的路径，写入ZipOutputStream的ZipEntry的构造器里传的是文件名，按这个区分文件目录
+ 
+ 
+ @Test
+    public void test13() throws Exception {
+        File file = new File("C:\\Users\\limingjie1\\Desktop\\测试文件\\点位");
+        FileOutputStream fos = new FileOutputStream("C:\\Users\\limingjie1\\Desktop\\测试文件\\test2.zip");
+        ZipOutputStream zos = new ZipOutputStream(fos);
+        ZipOutputStream zipOutputStream = readFilePath(file, zos);
+        zipOutputStream.write(new byte[1024]);
+
+
+
+    }
+
+    private ZipOutputStream readFilePath(File file,ZipOutputStream zos) throws Exception {
+        String prefixPath = "C:\\Users\\limingjie1\\Desktop\\";
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File file1 : files) {
+                readFilePath(file1,zos);
+            }
+        }else {
+            byte[] buf = new byte[BUFFER_SIZE];
+            String absolutePath = file.getAbsolutePath();
+            String path = absolutePath.replace(prefixPath, "");
+            ZipEntry zipEntry = new ZipEntry(path);
+            zos.putNextEntry(zipEntry);
+            int len;
+            FileInputStream in = new FileInputStream(file.getAbsolutePath());
+            while ((len = in.read(buf)) != -1) {
+                zos.write(buf, 0, len);
+            }
+
+        }
+        return zos;
+    }
